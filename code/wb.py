@@ -1,20 +1,23 @@
-# Qing 
-# 29th May 2017 
+'''
+WB Functions
+'''
 
 '''
-1. broadcast data on cdb 
-2. fetch data from results queue 
+1. broadcast data on cdb
+2. fetch data from results queue
 3. remove entry in results queue
 
 '''
-# function: find ROB entry by tag
+
+# Main Functions
+# Find ROB entry by tag
 def find_ROB_entry(ROB, tag):
     for index in range(len(ROB)):
         if ROB[index].ROB_tag == tag:
             break
     return index
 
-# function: boroadcast
+# Broadcast
 # rat_int, rat_fp, reservation stations, ld_sd_queue, ROB
 def boroadcast(cdb, rat_int, rat_fp, 
                 rs_int_adder, rs_fp_adder, rs_fp_multi,
@@ -39,7 +42,7 @@ def boroadcast(cdb, rat_int, rat_fp,
             if (element.tag_2nd==dest_tag)&(element.valid_2nd==0):
                 element.value_2nd = cdb.value
                 element.valid_2nd = 1
-    # ld_sd_queue 
+    # ld_sd_queue
     for element in ld_sd_queue:
         if (element.data==dest_tag)&(element.op=='Sd'):
             element.data = cdb.value
@@ -52,12 +55,12 @@ def boroadcast(cdb, rat_int, rat_fp,
             element.value = cdb.value
             element.cdb.append(cycle)
 
-# function: wb 
+# wb Function
 def wb(cdb, rat_int, rat_fp, 
         rs_int_adder, rs_fp_adder, rs_fp_multi,
         ld_sd_queue, ROB, cycle,
         results_buffer):
-    # broadcast 
+    # broadcast
     if cdb.valid == 1:
         boroadcast(cdb, rat_int, rat_fp, 
                     rs_int_adder, rs_fp_adder, rs_fp_multi,
@@ -70,4 +73,3 @@ def wb(cdb, rat_int, rat_fp,
             cdb.value = results_buffer[0].value
             cdb.dest_tag = results_buffer[0].dest_tag
             results_buffer.popleft()
-

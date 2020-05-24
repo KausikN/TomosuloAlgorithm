@@ -8,14 +8,14 @@ from collections import deque, namedtuple
 from init import read_instruction, build_rs, ld_sd_entry, ld_sd_exe, ld_sd_mem, cdb, ROB_entry, PC
 from print_status import ps, pss
 from issue import issue, check_rs_space
-from exe import exe 
+from exe import exe
 from mem import mem
-from wb import wb 
+from wb import wb
 from commit import commit
 
 # Driver Code
 # Initialise
-instructions = read_instruction('code.in')  # Read instructions from input file
+instructions = read_instruction('code/code.in')  # Read instructions from input file
 
 # Initialise regs, RAT, Memory
 # int REG - integer register

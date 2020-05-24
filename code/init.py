@@ -1,8 +1,11 @@
-# Qing 
-# 21st May 2017 
+'''
+Initialisation Fucntions
+'''
 
+# Imports
 from collections import namedtuple
 
+# Main Functions
 # Define Datatypes
 # Reservation Station
 def rs_entry():
