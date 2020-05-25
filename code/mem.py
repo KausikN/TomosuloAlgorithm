@@ -66,9 +66,9 @@ def put_entry_into_ld_sd_mem(ld_sd_mem, entry):
 # Check if Sd to be committed in next cycle
 def check_if_sd_committable(ld_sd_queue, ROB):
     flag = False
-    if ld_sd_queue[0].ldsd_tag == ROB[0].dest_tag:
+    if ld_sd_queue[0].ld_sd_tag == ROB[0].dest_tag:
         flag = True
-    if ld_sd_queue[0].ldsd_tag == ROB[1].dest_tag:
+    if ld_sd_queue[0].ld_sd_tag == ROB[1].dest_tag:
         # previous ins has been broadcasted
         if len(ROB[0].cdb)!=0:
             flag = True
@@ -132,7 +132,7 @@ def mem(ld_sd_queue, ld_sd_mem, time_ld_sd_mem, results_buffer,
             # check if this Sd is ready and to be commited
             if (ld_sd_queue[0].ready==1):
                 # check to be committed in next cycle
-                if (check_if_sd_committable):
+                if (check_if_sd_committable(ld_sd_queue, ROB)):
                     # already have data in Sd
                     if (type(ld_sd_queue[0].data)==int)|(type(ld_sd_queue[0].data)==float):
                         # put the Sd entry into ld_sd_mem
@@ -152,5 +152,5 @@ def mem(ld_sd_queue, ld_sd_mem, time_ld_sd_mem, results_buffer,
                         if check_all_previous_Sd_no_match(ld_sd_queue, index): 
                             put_entry_into_ld_sd_mem(ld_sd_mem, ld_sd_queue[index])
                             ld_sd_queue.remove(ld_sd_queue[index])
-                            ld_sd_mem.busy =1
+                            ld_sd_mem.busy = 1
                             break

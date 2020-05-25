@@ -19,7 +19,7 @@ def find_ROB_entry(ROB, tag):
 
 # Broadcast
 # rat_int, rat_fp, reservation stations, ld_sd_queue, ROB
-def boroadcast(cdb, rat_int, rat_fp, 
+def broadcast(cdb, rat_int, rat_fp,
                 rs_int_adder, rs_fp_adder, rs_fp_multi,
                 ld_sd_queue, ROB, cycle):
     # dest_tag
@@ -31,7 +31,7 @@ def boroadcast(cdb, rat_int, rat_fp,
         rat_int[int(reg_tag[1:])] = cdb.value
     # rat_fp
     if reg_tag[0] == 'F':
-        rat_fp[int(reg_tag[1:])] = cdb.value 
+        rat_fp[int(reg_tag[1:])] = cdb.value
     # rs list
     rs_list = [rs_int_adder, rs_fp_adder, rs_fp_multi]
     for rs in rs_list:
@@ -62,7 +62,7 @@ def wb(cdb, rat_int, rat_fp,
         results_buffer):
     # broadcast
     if cdb.valid == 1:
-        boroadcast(cdb, rat_int, rat_fp, 
+        broadcast(cdb, rat_int, rat_fp,
                     rs_int_adder, rs_fp_adder, rs_fp_multi,
                     ld_sd_queue, ROB, cycle)
         cdb.valid = 0
