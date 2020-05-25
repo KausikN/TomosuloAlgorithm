@@ -45,8 +45,8 @@ memory[28] = 5.0
 memory[32] = 4.0
 
 # Intialise Reservation Stations
-# integer adder rs 
-size_rs_int_adder = 4 
+# integer adder rs
+size_rs_int_adder = 4
 rs_int_adder = build_rs(size_rs_int_adder)
 # fp adder rs
 size_rs_fp_adder = 3
@@ -56,10 +56,10 @@ size_rs_fp_multi = 2
 rs_fp_multi = build_rs(size_rs_fp_multi)
 
 # Initialise Function Unit
-# cycles in int adder 
+# cycles in int adder
 fu_int_adder = deque()
 time_fu_int_adder = 1
-# cycles in fp adder 
+# cycles in fp adder
 fu_fp_adder = deque()
 time_fu_fp_adder = 4
 # cycles in fp multiplier
@@ -68,7 +68,7 @@ time_fu_fp_multi = 15
 
 # Initialise Load/Store Queue
 ld_sd_queue = deque()
-size_ld_sd_queue = 5 
+size_ld_sd_queue = 5
 ld_sd_exe = ld_sd_exe()
 ld_sd_exe.busy = 0
 time_ld_sd_exe = 1
@@ -106,11 +106,11 @@ while (len(ROB)>0)|(cycle==1):
     
     # ISSUE stage
     if (PC.PC<len(instructions))&(PC.valid==1):
-        issue(cycle, PC, instructions, ROB, size_ROB, 
-                rs_int_adder, 
-                rs_fp_adder, 
-                rs_fp_multi, 
-                ld_sd_queue, size_ld_sd_queue, 
+        issue(cycle, PC, instructions, ROB, size_ROB,
+                rs_int_adder,
+                rs_fp_adder,
+                rs_fp_multi,
+                ld_sd_queue, size_ld_sd_queue,
                 rat_int, rat_fp)
 
     # EXE stage

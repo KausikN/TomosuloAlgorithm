@@ -91,7 +91,7 @@ def fu_exe(fu, fu_results, ROB, time_fu, cycle, PC):
 def ld_sd_execution(ld_sd_exe, time_ld_sd_exe, ld_sd_queue, ROB, cycle):
     if ld_sd_exe.busy == 1:
         # write down starting cycle
-        if ld_sd_exe.cycle == 0:            
+        if ld_sd_exe.cycle == 0:
             for element in ld_sd_queue:
                 if element.ld_sd_tag == ld_sd_exe.dest_tag:
                     break

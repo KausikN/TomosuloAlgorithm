@@ -11,7 +11,7 @@ from collections import namedtuple
 def rs_entry():
     rs_entry = namedtuple('rs_entry', 'busy, op, tag_1st, value_1st, valid_1st, tag_2nd, value_2nd, valid_2nd, dest_tag')
     temp = rs_entry
-    return temp 
+    return temp
 # Functional Unit
 def fu_entry():
     fu_entry = namedtuple('fu_entry', 'cycle, op, value1, value2, dest_tag')

@@ -108,7 +108,7 @@ def mem(ld_sd_queue, ld_sd_mem, time_ld_sd_mem, results_buffer,
                 ROB[index].commit.append(cycle)
         
         # cycle ++
-        ld_sd_mem.cycle +=1
+        ld_sd_mem.cycle += 1
         # get the data for Ld or reach the memory for Sd
         if ld_sd_mem.cycle == time_ld_sd_mem:
             ld_sd_mem.busy = 0
@@ -121,7 +121,7 @@ def mem(ld_sd_queue, ld_sd_mem, time_ld_sd_mem, results_buffer,
                 results_buffer[-1].dest_tag = ld_sd_mem.dest_tag
             # put data into memory for Sd
             else:
-                memory[ld_sd_mem.address]=ld_sd_mem.data
+                memory[ld_sd_mem.address] = ld_sd_mem.data
 
     '''fetch new instruction into ld_sd_mem'''
     if (ld_sd_mem.busy==0)&(len(ld_sd_queue)>0):

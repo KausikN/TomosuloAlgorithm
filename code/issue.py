@@ -38,7 +38,7 @@ def put_ins_into_ROB(ROB, size_ROB, PC, cycle, ins, ldsd_tag):
     if ins.split(' ')[0]=='Sd': # SD
         ROB[-1].dest_tag = ldsd_tag
     elif ins.split(' ')[0]=='Bne': # BNE
-        ROB[-1].dest_tag = int(ins.split(' ')[-1]) 
+        ROB[-1].dest_tag = int(ins.split(' ')[-1])
     else: # ALU and LD instructions
         ROB[-1].dest_tag = ins.split(' ')[1]
     # issue 
@@ -172,15 +172,15 @@ def update_rat(ROB, rat_int, rat_fp):
         pass
 
 # Issue Instruction
-def issue(cycle, PC, instructions, ROB, size_ROB, 
-        rs_int_adder, 
-        rs_fp_adder, 
-        rs_fp_multi, 
-        ld_sd_queue, size_ld_sd_queue, 
+def issue(cycle, PC, instructions, ROB, size_ROB,
+        rs_int_adder,
+        rs_fp_adder,
+        rs_fp_multi,
+        ld_sd_queue, size_ld_sd_queue,
         rat_int, rat_fp):
-    # fetch 1 instruction 
+    # fetch 1 instruction
     ins = instructions[PC.PC]
-    op = ins.split(' ')[0] 
+    op = ins.split(' ')[0]
     '''decode'''
     # LD/SD instructions
     if (op=='Ld')|(op=='Sd'):
@@ -195,7 +195,7 @@ def issue(cycle, PC, instructions, ROB, size_ROB,
             # update RAT
             update_rat(ROB, rat_int, rat_fp)
             # PC
-            PC.PC +=1
+            PC.PC += 1
     # integer adder instructions
     elif (op=='Add')|(op=='Addi')|(op=='Sub'):
         # check space
@@ -208,7 +208,7 @@ def issue(cycle, PC, instructions, ROB, size_ROB,
             # update RAT
             update_rat(ROB, rat_int, rat_fp)
             # PC
-            PC.PC +=1
+            PC.PC += 1
     # fp adder instructions
     elif (op=='Add.d')|(op=='Sub.d'):
         # check space
@@ -221,7 +221,7 @@ def issue(cycle, PC, instructions, ROB, size_ROB,
             # update RAT
             update_rat(ROB, rat_int, rat_fp)
             # PC
-            PC.PC +=1
+            PC.PC += 1
     # fp multiplier instructions
     elif (op=='Mult.d'):
         # check space
@@ -235,7 +235,7 @@ def issue(cycle, PC, instructions, ROB, size_ROB,
             update_rat(ROB, rat_int, rat_fp)
             # PC
             PC.PC +=1
-    # Bne 
+    # Bne
     elif (op=='Bne'):
         # check space
         if (len(ROB)<size_ROB)&(check_rs_space(rs_int_adder)>=0):
