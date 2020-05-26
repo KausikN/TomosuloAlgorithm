@@ -70,3 +70,31 @@ def build_rs(num):
         temp.busy = 0
         rs.extend([temp])
     return rs
+
+# Decode Instructions
+def decode_instructions(binary_ins, config):
+    instructions = []
+    operation_names = {}
+    for op in config['operations']:
+        operation_names[op['bin']] = op['name']
+
+    for bi in binary_ins:
+        opcode = bi[:4]
+        
+        # Check if load or store
+        if opcode in [config['load_store']['load_bin'], config['load_store']['store_bin']]:
+            # Format - Opcode 4bits, Rdst 4bits, Address 8bits
+            rdst = int(bi[4:8], 2)
+            address = int(bi[8:], 2)
+            if opcode == config['load_store']['load_bin']:  # Load
+                opcode = 'Ld'
+            else:
+                opcode = 'Sd'
+            instructions.append(opcode + " R" + rdst + " " + address + "(R0)")
+        else:
+            opcode = operation_names[opcode]
+            rdst = bi[4:8]
+            rsrc1 = bi[8:12]
+            rsrc2 = bi[12:]
+            instructions.append(opcode + " R" + rdst + " R" + rsrc1 + " R" + rsrc2)
+    return instructions

@@ -51,6 +51,8 @@
     ], 
 
     "load_store": {
+        "load_bin": "1111", 
+        "store_bin": "1110", 
         "queue_size": 5, 
         "time_exe": 1, 
         "time_mem": 5
