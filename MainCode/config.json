@@ -1,0 +1,60 @@
+{
+    "n_registers": 16, 
+    "register_init_values": {
+        "1": 12, 
+        "2": 32
+    }, 
+
+    "n_bits_address": 8, 
+    "memory_init_values": {
+        "4": 3.0, 
+        "8": 2.0, 
+        "12": 1.0, 
+        "24": 6.0, 
+        "28": 5.0, 
+        "32": 4.0
+    }, 
+
+    "operations": [
+        {
+            "bin": "0000",
+            "name": "Add", 
+            "rs_type": "adder"
+        }, 
+
+        {
+            "bin": "0001",
+            "name": "Addi", 
+            "rs_type": "adder"
+        }, 
+
+        {
+            "bin": "0010",
+            "name": "Mult", 
+            "rs_type": "mul"
+        }
+
+    ], 
+
+    "rs_fu": [
+        {
+            "rs_type": "adder", 
+            "rs_size": 4, 
+            "fu_time": 1
+        }, 
+
+        {
+            "rs_type": "mul", 
+            "rs_size": 2, 
+            "fu_time": 15
+        }
+    ], 
+
+    "load_store": {
+        "queue_size": 5, 
+        "time_exe": 1, 
+        "time_mem": 5
+    }, 
+
+    "ROB_size": 64
+}

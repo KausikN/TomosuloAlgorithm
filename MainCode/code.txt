@@ -1,0 +1,9 @@
+Ld R2 0(R1)
+Mult R4 R2 R15
+Ld R6 0(R2)
+Add R6 R4 R6
+Sd R6 0(R2)
+Addi R1 R1 -4
+Addi R2 R2 -4
+Bne R1 R0 -12
+Add R15 R2 R2
