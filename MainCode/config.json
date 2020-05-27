@@ -24,16 +24,73 @@
 
         {
             "bin": "0001",
-            "name": "Addi", 
+            "name": "Addcarry", 
             "rs_type": "adder"
         }, 
 
         {
             "bin": "0010",
+            "name": "Sub",
+            "rs_type": "sub"
+        },
+        
+        {
+            "bin": "0011",
+            "name": "Subborrow",
+            "rs_type": "sub"
+        {
+            "bin": "0100",
             "name": "Mult", 
             "rs_type": "mul"
+        },
+        
+        {
+            "bin": "0101",
+            "name": "Fpadd",
+            "rs_type": "fpadder"
+        },
+        
+        {
+            "bin": "0110",
+            "name": "Fpsub",
+            "rs_type": "fpsub"
+        },
+        
+        {
+            "bin": "0111",
+            "name": "Fpmul",
+            "rs_type": "fpmul"
+        },
+        
+        {
+            "bin": "1001",
+            "name": "Regcomp",
+            "rs_type": "regcomp"
+        },
+        
+        {
+            "bin": "1010",
+            "name": "Bitwisexor",
+            "rs_type": "bitxor"
+        },
+        
+        {
+            "bin": "1011",
+            "name": "Bitwisenand",
+            "rs_type": "bitnand"
+        },
+        
+        {
+            "bin": "1100",
+            "name": "Logicshiftright",
+            "rs_type": "lshiftright"
+        },
+        
+        {
+            "bin": "1101",
+            "name": "Logicshiftleft",
+            "rs_type": "lshiftleft"
         }
-
     ], 
 
     "rs_fu": [
