@@ -40,7 +40,10 @@ def put_ins_into_ROB(ROB, size_ROB, PC, cycle, ins, ldsd_tag):
     elif ins.split(' ')[0] == 'Bne': # BNE
         ROB[-1].dest_tag = int(ins.split(' ')[-1])
     else: # ALU and LD instructions
-        ROB[-1].dest_tag = ins.split(' ')[1]
+        if len(ins.split(' ')) > 1:
+            ROB[-1].dest_tag = ins.split(' ')[1]
+        else:
+            ROB[-1].dest_tag = 'HLT'
     # issue
     ROB[-1].issue.append(cycle)
 
@@ -59,17 +62,21 @@ def put_ins_into_rs(station, index, ins, ROB, rat):
             entry.value_1st = rat[int(register[1:])]
             entry.valid_1st = 1
 
-    # reg 2
-    register = ins.split(' ')[3] # register name
-    if register[0] in ['F', 'R', 'f', 'r']:
-        if (type(rat[int(register[1:])]) == str):
-            entry.tag_2nd = rat[int(register[1:])]
-            entry.valid_2nd = 0
-        else:
-            entry.value_2nd = rat[int(register[1:])]
+    # reg 2 if exists
+    if len(ins.split(' ')) == 4:
+        register = ins.split(' ')[3] # register name
+        if register[0] in ['F', 'R', 'f', 'r']:
+            if (type(rat[int(register[1:])]) == str):
+                entry.tag_2nd = rat[int(register[1:])]
+                entry.valid_2nd = 0
+            else:
+                entry.value_2nd = rat[int(register[1:])]
+                entry.valid_2nd = 1
+        else: # immediate number
+            entry.value_2nd = int(ins.split(' ')[3])
             entry.valid_2nd = 1
-    else: # immediate number
-        entry.value_2nd = int(ins.split(' ')[3])
+    else:
+        entry.value_2nd = 0
         entry.valid_2nd = 1
     # dest_tag
     entry.dest_tag = ROB[-1].ROB_tag
@@ -114,14 +121,20 @@ def put_ins_into_ldsd(ldsd_tag, ld_sd_queue, ins, ROB, rat):
         
     ld_sd_queue[-1].dest_tag = ROB[-1].ROB_tag
     # immediate and reg value
-    ld_sd_queue[-1].immediate = int(ins.split(' ')[-1][:-4])
-    register = ins.split(' ')[-1][-3:-1] # register name
-    if (type(rat[int(register[1:])]) == str):
-        ld_sd_queue[-1].reg_tag = rat[int(register[1:])]
-        ld_sd_queue[-1].valid = 0
-    else:
-        ld_sd_queue[-1].reg_value = rat[int(register[1:])]
+    if ins.split(' ')[-1].find('(') == -1 and ins.split(' ')[-1].find(')') == -1:
+        ld_sd_queue[-1].immediate = int(ins.split(' ')[-1])
+        ld_sd_queue[-1].reg_value = 0
         ld_sd_queue[-1].valid = 1
+    else:
+        immediate_closing_index = int(ins.split(' ')[-1].find('(') - ins.split(' ')[-1].find(')') - 1)
+        ld_sd_queue[-1].immediate = int(ins.split(' ')[-1][:immediate_closing_index])
+        register = ins.split(' ')[-1][-3:-1] # register name
+        if (type(rat[int(register[1:])]) == str):
+            ld_sd_queue[-1].reg_tag = rat[int(register[1:])]
+            ld_sd_queue[-1].valid = 0
+        else:
+            ld_sd_queue[-1].reg_value = rat[int(register[1:])]
+            ld_sd_queue[-1].valid = 1
 
 # Check space of reservation station
 def check_rs_space(station):
@@ -139,7 +152,9 @@ def update_rat(ROB, rat):
 
 # Find Reservation Station Type of Operation Name
 def find_rstype_of_op(opname, operations):
+    # print('OPNAME', opname)
     for op in operations:
+        # print('     ', op['name'])
         if opname == op['name']:
             return op['rs_type']
     return ''
@@ -149,11 +164,21 @@ def issue(cycle, PC, instructions, ROB, size_ROB,
         rs,
         ld_sd_queue, size_ld_sd_queue,
         rat,
-        config):
+        config, Flags):
     # fetch 1 instruction
     ins = instructions[PC.PC]
     op = ins.split(' ')[0]
     # Decode
+    # Check HALT
+    if op in ['HLT']:
+        # put ins into ROB
+        put_ins_into_ROB(ROB, size_ROB, PC, cycle, ins, '')
+        # Update PC
+        PC.PC = 0
+        PC.valid = 0
+        Flags.HALT = 1
+        return
+        # quit()
     # LD/SD instructions
     if op in ['Ld', 'Sd']:
         # check space

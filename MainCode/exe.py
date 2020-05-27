@@ -48,7 +48,7 @@ def find_ROB_entry(ROB, tag):
     return index
 
 # Functional units execution
-def fu_exe(fu, fu_results, ROB, time_fu, cycle, PC):
+def fu_exe(fu, fu_results, ROB, time_fu, cycle, PC, Flags):
     if not len(fu) == 0:
         for element in fu:
             element.cycle += 1
@@ -75,7 +75,7 @@ def fu_exe(fu, fu_results, ROB, time_fu, cycle, PC):
                     PC.PC = int(PC.PC + 1 + offset/4)
                     PC.valid = 1
             else:
-                fu_results[-1].value = ExecuteOperation(fu[0].op, fu[0].value1, fu[0].value2)
+                fu_results[-1].value = ExecuteOperation(fu[0].op, fu[0].value1, fu[0].value2, Flags)
             # remove from fu
             fu.popleft()
 
@@ -105,18 +105,21 @@ def ld_sd_execution(ld_sd_exe, time_ld_sd_exe, ld_sd_queue, ROB, cycle):
             index = find_ROB_entry(ROB, element.dest_tag)
             ROB[index].exe.append(cycle)
             ld_sd_exe.busy = 0
+        else:
+            ld_sd_exe.cycle += 1
 
 # Execute Instruction
 def exe(fu, fu_time,
         results_buffer,
         rs,
         ld_sd_exe, time_ld_sd_exe, ld_sd_queue,
-        cycle, ROB, PC):
+        cycle, ROB, PC, Flags):
     # execution in fu and ld_sd address calculation
     ld_sd_execution(ld_sd_exe, time_ld_sd_exe, ld_sd_queue, ROB, cycle)
     # functional units
     for fu_key in fu.keys():
-        fu_exe(fu[fu_key], results_buffer, ROB, fu_time[fu_key], cycle, PC)
+        # print(fu[fu_key])
+        fu_exe(fu[fu_key], results_buffer, ROB, fu_time[fu_key], cycle, PC, Flags)
 
     # fetch instructions from rs and ld_sd_queue
     # from ld_sd_queue
@@ -140,6 +143,6 @@ def exe(fu, fu_time,
             add_entry_into_fu(fu[rs_key], rs[rs_key][index])
             # check if it's a waiting instruction
             if ROB[find_ROB_entry(ROB, rs[rs_key][index].dest_tag)].issue[0] < cycle:
-                fu_exe(fu[rs_key], results_buffer, ROB, fu_time[rs_key], cycle, PC)
+                fu_exe(fu[rs_key], results_buffer, ROB, fu_time[rs_key], cycle, PC, Flags)
             # remove ins from rs
             rs[rs_key][index].busy = 0

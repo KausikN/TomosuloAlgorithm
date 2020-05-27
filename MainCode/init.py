@@ -4,6 +4,7 @@ Initialisation Fucntions
 
 # Imports
 from collections import namedtuple
+import math
 
 # Main Functions
 # Define Datatypes
@@ -57,6 +58,11 @@ def PC():
     PC = namedtuple('PC', 'PC, valid')
     temp = PC
     return temp
+# Flags
+def flags():
+    Flags = namedtuple('Flags', 'CF, HALT')
+    temp = Flags
+    return temp
 # Function: read instructions
 def read_instruction(codefile):
     with open(codefile) as f:
@@ -79,22 +85,81 @@ def decode_instructions(binary_ins, config):
         operation_names[op['bin']] = op['name']
 
     for bi in binary_ins:
+        ins = ''
         opcode = bi[:4]
         
         # Check if load or store
         if opcode in [config['load_store']['load_bin'], config['load_store']['store_bin']]:
             # Format - Opcode 4bits, Rdst 4bits, Address 8bits
-            rdst = int(bi[4:8], 2)
-            address = int(bi[8:], 2)
+            rdst = str(int(bi[4:8], 2))
+            address = str(int(bi[8:], 2))
             if opcode == config['load_store']['load_bin']:  # Load
                 opcode = 'Ld'
             else:
                 opcode = 'Sd'
-            instructions.append(opcode + " R" + rdst + " " + address + "(R0)")
+            ins = opcode + " R" + rdst + " " + address
+        elif operation_names[opcode] == 'HLT':
+            ins = 'HLT'
         else:
             opcode = operation_names[opcode]
-            rdst = bi[4:8]
-            rsrc1 = bi[8:12]
-            rsrc2 = bi[12:]
-            instructions.append(opcode + " R" + rdst + " R" + rsrc1 + " R" + rsrc2)
+            rdst = str(int(bi[4:8], 2))
+            rsrc1 = str(int(bi[8:12], 2))
+            if len(bi) > 12:
+                rsrc2 = str(int(bi[12:], 2))
+                ins = opcode + " R" + rdst + " R" + rsrc1 + " R" + rsrc2
+            else:
+                ins = opcode + " R" + rdst + " R" + rsrc1
+        instructions.append(ins)
     return instructions
+
+def int2bin(val, nbits):
+    val = int(val)
+    binval = str(bin(val))[2:]
+    if len(binval) > nbits:
+        return binval[-nbits + 1:]
+    else:
+        n_pad = nbits - len(binval)
+        pad = "0" * n_pad
+        return pad + binval
+
+def encode_instructions(instructions, config):
+    bin_ins = []
+    bin_names = {}
+    for op in config['operations']:
+        bin_names[op['name']] = op['bin']
+
+    for ins in instructions:
+        binin = ''
+        ins_split = ins.split(' ')
+        opcode = ins_split[0]
+        
+        # Check if load or store
+        if opcode in ['Ld', 'Sd']:
+            # Format - Opcode 4bits, Rdst 4bits, Address 8bits
+            rdst_bin = int2bin(ins_split[1][1:], int(math.log(config['n_registers'], 2)))
+            address_bin = int2bin(ins_split[2].split('(')[0], config['n_bits_address'])
+            if opcode == 'Ld':  # Load
+                opcode = config['load_store']['load_bin']
+            else:
+                opcode = config['load_store']['store_bin']
+            binin = opcode + rdst_bin + address_bin
+        elif opcode in ['HLT']:
+            binin = ''
+            for op in config['operations']:
+                if op['name'] == 'HLT':
+                    binin = op['bin'] 
+        else:
+            opcode = bin_names[opcode]
+            rdst_bin = int2bin(ins_split[1][1:], int(math.log(config['n_registers'], 2)))
+            rsrc1_bin = int2bin(ins_split[2][1:], int(math.log(config['n_registers'], 2)))
+            if len(ins_split) > 3:
+                rsrc2_bin = int2bin(ins_split[3][1:], int(math.log(config['n_registers'], 2)))
+            else:
+                rsrc2_bin = ''
+            binin = opcode + rdst_bin + rsrc1_bin + rsrc2_bin
+        bin_ins.append(binin)
+    return bin_ins
+
+def print_instructions(instructions):
+    for ins in instructions:
+        print(ins)

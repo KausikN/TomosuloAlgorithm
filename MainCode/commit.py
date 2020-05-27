@@ -30,7 +30,7 @@ def commit(ROB, reg, cycle, instructions):
             if not len(ROB[0].exe) == 0:
                 entry = ROB.popleft()
                 print_ROB(entry, instructions)
-        if (len(ROB) > 0) and (not instructions[ROB[0].PC].split(' ')[0] == 'Bne'):
+        else:#if (len(ROB) > 0):# and (not instructions[ROB[0].PC].split(' ')[0] == 'Bne'):
             if not len(ROB[0].cdb) == 0: # broadcasted instructions
                 ROB[0].commit.append(cycle+1)
                 entry = ROB.popleft()
