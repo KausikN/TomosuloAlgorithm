@@ -144,6 +144,7 @@ while (len(ROB) > 0) or (cycle == 1):
     commit(ROB, reg, cycle, instructions)
 
     # print("COMMIT", cycle)
+    # print(rat)
 
     # cycle number
     cycle += 1
