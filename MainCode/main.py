@@ -19,17 +19,17 @@ from commit import commit, print_ROB
 # Initialise
 config = json.load(open('MainCode/config.json', 'rb'))
 # Read
-instructions = read_instruction('MainCode/code.txt')  # Read instructions from input file
-# Encode
-bin_instructions = encode_instructions(instructions, config)
-print("Binary Code: ")
-print_instructions(bin_instructions)
-print("\n")
-# Decode
-instructions = decode_instructions(bin_instructions, config)
-print("Code: ")
-print_instructions(instructions)
-print("\n")
+instructions = read_instruction('MainCode/2sComp.s')  # Read instructions from input file
+# # Encode
+# bin_instructions = encode_instructions(instructions, config)
+# print("Binary Code: ")
+# # print_instructions(bin_instructions)
+# print("\n")
+# # Decode
+# instructions = decode_instructions(bin_instructions, config)
+# print("Code: ")
+# print_instructions(instructions)
+# print("\n")
 
 
 # Initialise regs, RAT, Memory

@@ -2,11 +2,6 @@
 Commit Functions
 '''
 
-'''
-1. commit ROB_buffer
-2. fetch header into ROB_buffer
-'''
-
 # Main Functions
 # Print ROB entry
 def print_ROB(entry, instructions):

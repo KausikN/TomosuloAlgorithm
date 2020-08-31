@@ -1,18 +1,15 @@
 {
     "n_registers": 16, 
     "register_init_values": {
-        "1": 12, 
-        "2": 32
+        "0": 0, 
+        "10": 1, 
+        "11": 1
     }, 
 
     "n_bits_address": 8, 
     "memory_init_values": {
-        "4": 3.0, 
-        "8": 2.0, 
-        "12": 1.0, 
-        "24": 6.0, 
-        "28": 5.0, 
-        "32": 4.0
+        "0": 16, 
+        "1": 15
     }, 
 
     "operations": [
@@ -72,7 +69,7 @@
 
         {
             "bin": "1001",
-            "name": "CMP", 
+            "name": "AND", 
             "rs_type": "logical"
         }, 
 
@@ -84,7 +81,7 @@
 
         {
             "bin": "1011",
-            "name": "NAND", 
+            "name": "OR", 
             "rs_type": "logical"
         }, 
 
@@ -105,31 +102,31 @@
     "rs_fu": [
         {
             "rs_type": "adder", 
-            "rs_size": 4, 
+            "rs_size": 18, 
             "fu_time": 6
         }, 
 
         {
             "rs_type": "mul", 
-            "rs_size": 2, 
+            "rs_size": 18, 
             "fu_time": 11
         }, 
 
         {
             "rs_type": "fadder", 
-            "rs_size": 2, 
+            "rs_size": 1, 
             "fu_time": 21
         }, 
 
         {
             "rs_type": "fmul", 
-            "rs_size": 2, 
+            "rs_size": 1, 
             "fu_time": 24
         }, 
 
         {
             "rs_type": "logical", 
-            "rs_size": 4, 
+            "rs_size": 8, 
             "fu_time": 1
         }, 
 
@@ -143,10 +140,10 @@
     "load_store": {
         "load_bin": "1111", 
         "store_bin": "1110", 
-        "queue_size": 5, 
+        "queue_size": 10, 
         "time_exe": 2, 
         "time_mem": 5
     }, 
 
-    "ROB_size": 64
+    "ROB_size": 4096
 }

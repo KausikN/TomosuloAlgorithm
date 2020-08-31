@@ -28,3 +28,7 @@ def ExecuteOperation(opname, op1, op2, Flags=None):
         return op1 >> op2
     elif opname in ['LHR']:
         return op1 << op2
+    elif opname in ['AND']:
+        return op1 & op2
+    elif opname in ['OR']:
+        return op1 | op2

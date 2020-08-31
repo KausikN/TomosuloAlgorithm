@@ -84,6 +84,8 @@ def decode_instructions(binary_ins, config):
     for op in config['operations']:
         operation_names[op['bin']] = op['name']
 
+    rdst_size = len(str(bin(config['n_registers'])))
+
     for bi in binary_ins:
         ins = ''
         opcode = bi[:4]
@@ -91,8 +93,9 @@ def decode_instructions(binary_ins, config):
         # Check if load or store
         if opcode in [config['load_store']['load_bin'], config['load_store']['store_bin']]:
             # Format - Opcode 4bits, Rdst 4bits, Address 8bits
-            rdst = str(int(bi[4:8], 2))
-            address = str(int(bi[8:], 2))
+
+            rdst = str(int(bi[4:4+rdst_size], 2))
+            address = str(int(bi[4+rdst_size:], 2))
             if opcode == config['load_store']['load_bin']:  # Load
                 opcode = 'Ld'
             else:
@@ -102,10 +105,10 @@ def decode_instructions(binary_ins, config):
             ins = 'HLT'
         else:
             opcode = operation_names[opcode]
-            rdst = str(int(bi[4:8], 2))
-            rsrc1 = str(int(bi[8:12], 2))
-            if len(bi) > 12:
-                rsrc2 = str(int(bi[12:], 2))
+            rdst = str(int(bi[4:4+rdst_size], 2))
+            rsrc1 = str(int(bi[4+rdst_size:4+rdst_size*2], 2))
+            if len(bi) > 4+rdst_size*2:
+                rsrc2 = str(int(bi[4+rdst_size*2:], 2))
                 ins = opcode + " R" + rdst + " R" + rsrc1 + " R" + rsrc2
             else:
                 ins = opcode + " R" + rdst + " R" + rsrc1

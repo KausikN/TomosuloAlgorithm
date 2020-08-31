@@ -2,14 +2,6 @@
 Execution Functions
 '''
 
-'''
-1. calculate valid instructions
-    -- for ALU instructions, write results into fu_results, remove that fu entry
-    -- for LD/SD, write address result immediately back to ld_sd_queue
-2. fetch instructions into function unit with spare space
-    -- remove ALU instructions from rs
-    -- don't remove ld/sd instructions
-'''
 
 # Imports
 from init import fu_entry, fu_result

@@ -2,12 +2,6 @@
 WriteBack Functions
 '''
 
-'''
-1. broadcast data on cdb
-2. fetch data from results queue
-3. remove entry in results queue
-
-'''
 
 # Main Functions
 # Find ROB entry by tag

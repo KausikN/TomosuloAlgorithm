@@ -2,11 +2,6 @@
 Issue Functions
 '''
 
-"""
-1. put 1 instruction in ROB
-2. put this instruction in RS/ld_sd_queue
-3. update RAT
-"""
 
 # Imports
 from collections import namedtuple, deque

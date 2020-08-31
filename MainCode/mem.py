@@ -2,17 +2,6 @@
 Memory Functions
 '''
 
-'''
-1. Ld forward check from Sd in ld_sd_queue
-    -- only check nearest Sd instruction
-2. execute LD/SD instruction in ld_sd_mem
-    -- once LD instruction gets data, write back to ld_sd_queue
-    -- LD instruction should be removed after get data
-    -- SD instruction should be removed at commit stage
-3. fetch new LD/SD instruction into ld_sd_mem
-    -- if first element is SD, ready and has valid data, only SD to be committed can be fetched into ld_sd_mem
-    -- else put the first no-matched Ld into ld_sd_mem
-'''
 
 # Imports
 from init import fu_result
@@ -75,7 +64,7 @@ def check_if_sd_committable(ld_sd_queue, ROB):
 # mem
 def mem(ld_sd_queue, ld_sd_mem, time_ld_sd_mem, results_buffer,
         memory, ROB, cycle):
-    '''look forward check for all Ld instructions'''
+    # Forward Check for WAR
     index = -1
     remove_list = []
     for element in ld_sd_queue:
